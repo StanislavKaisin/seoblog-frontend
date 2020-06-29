@@ -1,3 +1,6 @@
+import React, { useState } from "react";
+import Link from "next/link";
+
 import {
   Collapse,
   Navbar,
@@ -8,7 +11,9 @@ import {
   NavLink,
 } from "reactstrap";
 
-const Example = (props) => {
+import { APP_NAME } from "../config";
+
+const Header = (props) => {
   const [collapsed, setCollapsed] = useState(true);
 
   const toggleNavbar = () => setCollapsed(!collapsed);
@@ -16,19 +21,21 @@ const Example = (props) => {
   return (
     <div>
       <Navbar color="faded" light>
-        <NavbarBrand href="/" className="mr-auto">
-          reactstrap
-        </NavbarBrand>
+        <Link href="/">
+          <NavLink className="font-weight-bold">{APP_NAME}</NavLink>
+        </Link>
         <NavbarToggler onClick={toggleNavbar} className="mr-2" />
         <Collapse isOpen={!collapsed} navbar>
           <Nav navbar>
             <NavItem>
-              <NavLink href="/components/">Components</NavLink>
+              <Link href="/signin">
+                <NavLink>Signin page</NavLink>
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="https://github.com/reactstrap/reactstrap">
-                GitHub
-              </NavLink>
+              <Link href="/signup">
+                <NavLink>Signup page</NavLink>
+              </Link>
             </NavItem>
           </Nav>
         </Collapse>
@@ -37,4 +44,4 @@ const Example = (props) => {
   );
 };
 
-export default Example;
+export default Header;
