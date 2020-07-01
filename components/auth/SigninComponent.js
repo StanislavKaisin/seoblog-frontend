@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+
+import { signin, authentificate, isAuth } from "../../actions/auth";
+
 import Router from "next/router";
 
-import { signup, isAuth } from "../../actions/auth";
-
-const SignupComponent = () => {
+const SigninComponent = () => {
   const [values, setValues] = useState({
     name: "ryan",
     email: "ryan@gmail.com",
@@ -33,20 +34,16 @@ const SignupComponent = () => {
     // });
     setValues({ ...values, loading: true, error: false });
     const user = { name, email, password };
-    signup(user)
+    signin(user)
       .then((data) => {
         if (data.error) {
           setValues({ ...values, error: data.error });
         } else {
-          setValues({
-            ...values,
-            name: "",
-            email: "",
-            password: "",
-            error: "",
-            loading: false,
-            message: data.message,
-            showForm: false,
+          //save user token to cookie
+          //save user info to localStorage
+          //authentificate
+          authentificate(data, () => {
+            Router.push("/");
           });
         }
       })
@@ -66,18 +63,9 @@ const SignupComponent = () => {
   const showMessage = () =>
     message ? <div className="alert alert-info">{message}</div> : null;
 
-  const signupForm = () => {
+  const signinForm = () => {
     return (
       <form action="" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            value={name}
-            type="text"
-            className="form-control"
-            placeholder="Type your name"
-            onChange={handleChange("name")}
-          ></input>
-        </div>
         <div className="form-group">
           <input
             value={email}
@@ -97,7 +85,7 @@ const SignupComponent = () => {
           ></input>
         </div>
         <div>
-          <button className="btn btn-primary">Signup</button>
+          <button className="btn btn-primary">Signin </button>
         </div>
       </form>
     );
@@ -107,8 +95,9 @@ const SignupComponent = () => {
       {showError()}
       {showLoading()}
       {showMessage()}
-      {showForm && signupForm()}
+      {showForm && signinForm()}
     </>
   );
 };
-export default SignupComponent;
+
+export default SigninComponent;
